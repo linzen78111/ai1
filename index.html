@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>選校 AI 推薦系統</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="styles.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">選校 AI 推薦系統</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- 輸入表單 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">個人偏好設定</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="preferenceForm">
+                            <!-- 成績選擇 -->
+                            <div class="mb-3">
+                                <label for="score" class="form-label">學測成績範圍</label>
+                                <select class="form-select" id="score" required>
+                                    <option value="">請選擇成績範圍</option>
+                                    <option value="450-500">450-500分 (頂尖大學)</option>
+                                    <option value="400-449">400-449分 (國立大學)</option>
+                                    <option value="350-399">350-399分 (國立大學/頂尖私立)</option>
+                                    <option value="300-349">300-349分 (私立大學)</option>
+                                    <option value="250-299">250-299分 (私立大學/科技大學)</option>
+                                    <option value="200-249">200-249分 (科技大學/技術學院)</option>
+                                    <option value="150-199">150-199分 (技術學院)</option>
+                                    <option value="100-149">100-149分 (專科學校)</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="interest" class="form-label">興趣領域</label>
+                                <select class="form-select" id="interest" required>
+                                    <option value="">請選擇興趣領域</option>
+                                    <option value="人工智慧">人工智慧</option>
+                                    <option value="軟體工程">軟體工程</option>
+                                    <option value="資料科學">資料科學</option>
+                                    <option value="網路安全">網路安全</option>
+                                    <option value="企業管理">企業管理</option>
+                                    <option value="行銷">行銷</option>
+                                    <option value="財務管理">財務管理</option>
+                                    <option value="國際貿易">國際貿易</option>
+                                    <option value="法律">法律</option>
+                                    <option value="醫學">醫學</option>
+                                    <option value="工程">工程</option>
+                                    <option value="建築">建築</option>
+                                    <option value="教育">教育</option>
+                                    <option value="傳播">傳播</option>
+                                    <option value="設計">設計</option>
+                                    <option value="觀光">觀光</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="learningStyle" class="form-label">學習風格</label>
+                                <select class="form-select" id="learningStyle" required>
+                                    <option value="">請選擇學習風格</option>
+                                    <option value="研究導向">研究導向</option>
+                                    <option value="實作導向">實作導向</option>
+                                    <option value="產學合作">產學合作</option>
+                                    <option value="自主學習">自主學習</option>
+                                    <option value="團隊合作">團隊合作</option>
+                                    <option value="創新思維">創新思維</option>
+                                    <option value="理論研究">理論研究</option>
+                                    <option value="國際視野">國際視野</option>
+                                    <option value="人文關懷">人文關懷</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="futureGoal" class="form-label">未來目標</label>
+                                <select class="form-select" id="futureGoal" required>
+                                    <option value="">請選擇未來目標</option>
+                                    <option value="學術研究">學術研究</option>
+                                    <option value="科技研發">科技研發</option>
+                                    <option value="產業創新">產業創新</option>
+                                    <option value="創業發展">創業發展</option>
+                                    <option value="國際發展">國際發展</option>
+                                    <option value="公共服務">公共服務</option>
+                                    <option value="醫療服務">醫療服務</option>
+                                    <option value="教育服務">教育服務</option>
+                                    <option value="法律實務">法律實務</option>
+                                    <option value="商業發展">商業發展</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="region" class="form-label">地區偏好</label>
+                                <select class="form-select" id="region" required>
+                                    <option value="">請選擇地區</option>
+                                    <option value="北部">北部</option>
+                                    <option value="中部">中部</option>
+                                    <option value="南部">南部</option>
+                                    <option value="東部">東部</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">開始推薦</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 結果顯示區域 -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">推薦結果</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="results">
+                            <!-- 結果將在這裡動態生成 -->
+                        </div>
+                        <div id="comparisonChart" class="mt-4">
+                            <canvas id="schoolComparisonChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 學校詳情 Modal -->
+    <div class="modal fade" id="schoolDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">學校詳細資訊</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="schoolDetailContent">
+                    <!-- 詳細資訊將在這裡動態生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加載視窗 -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-container">
+            <div class="loading-content">
+                <h5 class="loading-title">資料處理中....</h5>
+                <p class="loading-desc">請稍後</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html> 
