@@ -94,23 +94,73 @@
 ├── styles.css             # 樣式表
 ├── schools_database.json  # 學校資料庫
 ├── package.json           # 專案配置
+├── .gitignore             # Git忽略文件
 └── README.md              # 專案說明
 ```
 
 ## 🚀 快速開始
 
-### 安裝依賴
+### 本地開發
+
+#### 安裝依賴
 ```bash
 npm install
 ```
 
-### 啟動伺服器
+#### 啟動伺服器
 ```bash
-node server.js
+# 開發模式（自動重啟）
+npm run dev
+
+# 生產模式
+npm start
 ```
 
-### 開啟瀏覽器
+#### 開啟瀏覽器
 訪問 `http://localhost:3000`
+
+### 部署到雲端平台
+
+#### Heroku 部署
+1. 創建 Heroku 帳號並安裝 Heroku CLI
+2. 在專案根目錄執行：
+```bash
+heroku create your-app-name
+git add .
+git commit -m "Deploy to Heroku"
+git push heroku main
+```
+
+#### Vercel 部署
+1. 連接 GitHub 倉庫到 Vercel
+2. 設置構建命令：`npm start`
+3. 設置輸出目錄：`./`
+4. 部署
+
+#### Railway 部署
+1. 連接 GitHub 倉庫到 Railway
+2. 自動部署，無需額外配置
+
+## ⚠️ 重要注意事項
+
+### 部署後無法使用後端服務的常見原因：
+
+1. **硬編碼的 localhost 端口** ✅ 已修復
+   - 問題：前端代碼中硬編碼 `http://localhost:3000`
+   - 解決：改為相對路徑 `/api/...`
+
+2. **缺少環境變數配置** ✅ 已修復
+   - 問題：伺服器端口硬編碼為 3000
+   - 解決：使用 `process.env.PORT || 3000`
+
+3. **缺少 .gitignore 文件** ✅ 已修復
+   - 問題：node_modules 等文件被上傳
+   - 解決：添加適當的 .gitignore 規則
+
+4. **部署平台配置**
+   - 確保部署平台支持 Node.js
+   - 檢查構建命令和啟動命令
+   - 確認環境變數設置
 
 ## 📊 系統截圖
 
@@ -148,6 +198,6 @@ node server.js
 
 ---
 
-**版本**：v2.0  
+**版本**：v2.1  
 **更新日期**：2024年  
 **開發團隊**：台灣選校AI系統開發組 

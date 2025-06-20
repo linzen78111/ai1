@@ -81,7 +81,7 @@ async function handleFormSubmit(event) {
         // 等待2秒後再發送請求
         await new Promise(resolve => setTimeout(resolve, 2000));
 
-        const response = await fetch('http://localhost:3000/api/recommend', {
+        const response = await fetch('/api/recommend', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -364,7 +364,7 @@ function displayResults(data) {
 // 顯示學校詳細資訊
 async function showSchoolDetails(schoolName) {
     try {
-        const response = await fetch(`http://localhost:3000/api/schools/${encodeURIComponent(schoolName)}`);
+        const response = await fetch(`/api/schools/${encodeURIComponent(schoolName)}`);
         const data = await response.json();
         
         if (!data.success) {
